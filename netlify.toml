@@ -1,0 +1,21 @@
+[build]
+  publish = "."
+
+# Le service worker et le manifeste ne doivent jamais rester en cache navigateur,
+# sinon les mises à jour n'arrivent pas sur les téléphones.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

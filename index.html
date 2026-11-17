@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1CB0F6">
+<meta name="description" content="Prépare ton Brevet d'Initiation Aéronautique : leçons express, quiz, badges et séries de jours. Gratuit.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Go BIA Go">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>Go BIA Go</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1CB0F6;--blue-d:#1899D6;--green:#58CC02;--green-d:#46A302;--orange:#FF9600;--red:#FF4B4B;--red-d:#EA2B2B;--yellow:#FFC800;--ink:#3C3C3C;--mute:#AFAFAF;--line:#E5E5E5;--bg:#FFFFFF;--soft:#F7F7F7;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:#EAF7FE;font-weight:700}
+#app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);position:relative}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:2px solid var(--line);position:sticky;top:0;background:#fff;z-index:5}
+.logo{font-weight:900;font-size:22px;color:var(--blue);letter-spacing:-.5px}
+.logo span{color:var(--green)}
+.chips{display:flex;gap:14px;font-weight:900;font-size:16px}
+.chip{display:flex;align-items:center;gap:4px}
+.chip.fire{color:var(--orange)} .chip.fire.off{color:var(--mute);filter:grayscale(1)}
+.chip.xp{color:var(--yellow)}
+.content{flex:1;padding:18px 18px 100px;overflow-y:auto}
+.card{border:2px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.goal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.goal-h b{font-size:17px;font-weight:900}
+.goal-h small{color:var(--mute)}
+.bar{height:16px;background:var(--line);border-radius:10px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--yellow);border-radius:10px;transition:width .5s}
+.bar.g>i{background:var(--green)}
+.module-head{background:var(--blue);color:#fff;border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 0 var(--blue-d);margin-bottom:26px}
+.module-head h2{font-size:19px;font-weight:900}
+.module-head p{font-size:14px;opacity:.9}
+.module-head .big{font-size:40px}
+.path{display:flex;flex-direction:column;align-items:center;gap:22px;margin-bottom:34px}
+.node-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.node{width:76px;height:70px;border-radius:50%;font-size:32px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .1s}
+.node:active{transform:translateY(4px)}
+.node.avail{background:var(--blue);box-shadow:0 7px 0 var(--blue-d)}
+.node.done{background:var(--green);box-shadow:0 7px 0 var(--green-d)}
+.node.exam.avail{background:var(--orange);box-shadow:0 7px 0 #D97F00}
+.node.locked{background:var(--line);box-shadow:0 7px 0 #CECECE;filter:grayscale(1);opacity:.8}
+.node.avail::after{content:'';position:absolute;inset:-9px;border:4px solid var(--blue);border-radius:50%;opacity:.35;animation:pulse 1.6s infinite}
+.node.exam.avail::after{border-color:var(--orange)}
+@keyframes pulse{0%{transform:scale(.92);opacity:.5}100%{transform:scale(1.15);opacity:0}}
+.node-label{font-size:14px;font-weight:800;text-align:center;max-width:180px}
+.node-label small{display:block;color:var(--mute);font-weight:700;font-size:12px}
+.soon h3{font-size:16px;font-weight:900;margin-bottom:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.5px}
+.soon-item{display:flex;align-items:center;gap:12px;padding:12px;border:2px solid var(--line);border-radius:14px;margin-bottom:10px;color:var(--mute)}
+.soon-item .ic{font-size:26px;filter:grayscale(1);opacity:.6}
+.soon-item em{margin-left:auto;font-style:normal;font-size:12px;background:var(--soft);padding:4px 8px;border-radius:8px}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;border-top:2px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+.nav button{flex:1;padding:10px 0 12px;font-size:24px;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.5}
+.nav button small{font-size:11px;font-weight:800}
+.nav button.on{opacity:1}
+.nav button.on small{color:var(--blue)}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;font-size:17px;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#fff;background:var(--green);box-shadow:0 5px 0 var(--green-d);transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--green-d)}
+.btn.blue{background:var(--blue);box-shadow:0 5px 0 var(--blue-d)}
+.btn.red{background:var(--red);box-shadow:0 5px 0 var(--red-d)}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn:disabled{background:var(--line);color:var(--mute);box-shadow:0 5px 0 #CECECE;cursor:default}
+.lesson{display:flex;flex-direction:column;min-height:100vh}
+.l-top{display:flex;align-items:center;gap:14px;padding:16px 18px}
+.l-top .x{font-size:26px;color:var(--mute);line-height:1}
+.l-top .bar{flex:1}
+.l-top .timer{font-weight:900;color:var(--orange);min-width:52px;text-align:right}
+.l-body{flex:1;padding:10px 20px 20px}
+.slide-emoji{font-size:72px;text-align:center;margin:10px 0 14px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.4);opacity:0}80%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.slide h2{font-size:23px;font-weight:900;margin-bottom:14px}
+.slide p,.slide li{font-size:16.5px;line-height:1.5;font-weight:600;margin-bottom:10px}
+.slide ul{padding-left:20px}
+.slide b{color:var(--blue-d);font-weight:900}
+.tip{background:#FFF7DB;border:2px solid #FFE38A;border-radius:14px;padding:12px;font-size:15px;font-weight:700;margin-top:8px}
+.q-kind{font-size:13px;color:var(--blue);font-weight:900;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.q-text{font-size:21px;font-weight:900;line-height:1.3;margin-bottom:22px}
+.opt{display:block;width:100%;text-align:left;padding:15px 16px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;font-size:16px;font-weight:700;margin-bottom:12px;background:#fff}
+.opt.sel{border-color:#84D8FF;background:#DDF4FF;color:var(--blue-d)}
+.opt.ok{border-color:var(--green);background:#D7FFB8;color:var(--green-d)}
+.opt.ko{border-color:var(--red);background:#FFDFE0;color:var(--red-d)}
+.l-foot{padding:16px 20px 24px;border-top:2px solid var(--line)}
+.l-foot.good{background:#D7FFB8;border-color:#D7FFB8}
+.l-foot.bad{background:#FFDFE0;border-color:#FFDFE0}
+.fb-title{font-size:20px;font-weight:900;margin-bottom:6px}
+.good .fb-title{color:var(--green-d)} .bad .fb-title{color:var(--red-d)}
+.fb-text{font-size:15px;font-weight:700;margin-bottom:14px;line-height:1.4}
+.good .fb-text{color:#3F8A04} .bad .fb-text{color:#B8282B}
+.end{text-align:center;padding:30px 22px}
+.end .trophy{font-size:90px;animation:pop .5s}
+.end h2{font-size:28px;font-weight:900;margin:10px 0 6px}
+.end p.sub{color:var(--mute);margin-bottom:22px}
+.stats{display:flex;gap:12px;margin-bottom:24px}
+.stat{flex:1;border:2px solid;border-radius:16px;overflow:hidden}
+.stat .h{color:#fff;font-size:12px;font-weight:900;padding:5px;text-transform:uppercase}
+.stat .v{font-size:22px;font-weight:900;padding:12px 4px}
+.stat.y{border-color:var(--yellow)} .stat.y .h{background:var(--yellow)} .stat.y .v{color:#E0A800}
+.stat.gr{border-color:var(--green)} .stat.gr .h{background:var(--green)} .stat.gr .v{color:var(--green-d)}
+.stat.o{border-color:var(--orange)} .stat.o .h{background:var(--orange)} .stat.o .v{color:var(--orange)}
+.newb{border:2px solid var(--yellow);background:#FFFBEA;border-radius:16px;padding:14px;margin-bottom:22px;animation:pop .6s}
+.newb h3{font-size:15px;font-weight:900;color:#C99700;margin-bottom:8px;text-transform:uppercase}
+.newb div{font-size:17px;font-weight:800;margin:4px 0}
+.end .btn{margin-bottom:14px}
+.review{text-align:left;margin-bottom:22px}
+.review .r{border:2px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;font-size:14.5px}
+.review .r b{display:block;margin-bottom:6px;font-weight:900}
+.review .r .ok{color:var(--green-d)} .review .r .ko{color:var(--red-d);text-decoration:line-through}
+.badges{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.badge{border:2px solid var(--line);border-radius:16px;padding:16px 10px;text-align:center}
+.badge .e{font-size:44px;margin-bottom:6px}
+.badge b{display:block;font-size:15px;font-weight:900;margin-bottom:4px}
+.badge small{color:var(--mute);font-size:12.5px;display:block;line-height:1.3}
+.badge.on{border-color:var(--yellow);background:#FFFBEA;box-shadow:0 4px 0 #FFE38A}
+.badge.off .e{filter:grayscale(1);opacity:.35}
+.page-title{font-size:24px;font-weight:900;margin-bottom:4px}
+.page-sub{color:var(--mute);margin-bottom:18px;font-weight:700}
+.pstats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.pstat{border:2px solid var(--line);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center}
+.pstat .e{font-size:26px}
+.pstat b{display:block;font-size:19px;font-weight:900}
+.pstat small{color:var(--mute);font-size:12.5px}
+.note{font-size:13px;color:var(--mute);line-height:1.45;margin-top:18px;font-weight:600}
+.week{display:flex;justify-content:space-between;margin-top:6px}
+.week div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--mute)}
+.week span{width:30px;height:30px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:15px}
+.week span.on{background:var(--orange);color:#fff}
+.welcome{text-align:center;padding:40px 24px;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+.welcome .plane{font-size:100px;animation:fly 3s ease-in-out infinite}
+@keyframes fly{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.welcome h1{font-size:34px;font-weight:900;color:var(--blue);margin:18px 0 10px}
+.welcome h1 span{color:var(--green)}
+.welcome p{font-size:17px;color:#777;margin-bottom:34px;line-height:1.45}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ====== CONTENU : module Météorologie (contenu original, prototype) ======
+const LESSONS = [
+ {id:'atm', title:"L'atmosphère", icon:'🌍', sub:'Composition, couches, atmosphère type',
+  slides:[
+   {e:'🌍', t:"L'air qu'on respire", b:"<p>L'atmosphère est l'enveloppe de gaz qui entoure la Terre. Elle contient environ <b>78 % d'azote</b> et <b>21 % d'oxygène</b>. Le reste : argon, gaz carbonique… et un peu de <b>vapeur d'eau</b>, indispensable à la formation des nuages.</p>"},
+   {e:'🏔️', t:"Des couches empilées", b:"<p>La couche du bas s'appelle la <b>troposphère</b>. C'est là que se passe presque toute la météo : nuages, pluie, orages. Son plafond, la <b>tropopause</b>, est vers <b>11 km</b> d'altitude chez nous (plus haut à l'équateur, plus bas aux pôles).</p><p>Au-dessus : la stratosphère, puis la mésosphère et la thermosphère.</p>"},
+   {e:'🌡️', t:"L'atmosphère type (ISA)", b:"<p>Pour comparer les avions et régler les instruments, on utilise une atmosphère « modèle » :</p><ul><li>au niveau de la mer : <b>15 °C</b> et <b>1013,25 hPa</b></li><li>la température baisse de <b>6,5 °C tous les 1 000 m</b></li><li>près du sol, la pression baisse d'environ <b>1 hPa tous les 8,5 m</b> (28 ft)</li></ul><div class='tip'>💡 Astuce : à 2 000 m en atmosphère type, il fait 15 − 13 = 2 °C.</div>"}
+  ],
+  qs:[
+   {q:"Quel est le gaz le plus abondant dans l'air ?", o:["L'azote","L'oxygène","Le gaz carbonique","La vapeur d'eau"], e:"L'air contient environ 78 % d'azote et 21 % d'oxygène."},
+   {q:"Dans quelle couche se produisent la plupart des phénomènes météo ?", o:["La troposphère","La stratosphère","La mésosphère","La thermosphère"], e:"La troposphère contient presque toute la vapeur d'eau : c'est là que naissent nuages et précipitations."},
+   {q:"Au niveau de la mer, l'atmosphère type (ISA) donne :", o:["15 °C et 1013,25 hPa","0 °C et 1000 hPa","20 °C et 1013,25 hPa","15 °C et 1000 hPa"], e:"Les valeurs de référence ISA au niveau de la mer sont 15 °C et 1013,25 hPa."},
+   {q:"En atmosphère type, la température diminue avec l'altitude de :", o:["6,5 °C par 1 000 m","1 °C par 1 000 m","10 °C par 100 m","Elle ne diminue pas"], e:"Le gradient de l'atmosphère type est de −6,5 °C par 1 000 m (soit environ −2 °C par 1 000 ft)."},
+   {q:"En atmosphère type, quelle température fait-il à 2 000 m ?", o:["2 °C","15 °C","8,5 °C","−13 °C"], e:"15 °C − (2 × 6,5 °C) = 15 − 13 = 2 °C."},
+   {q:"Près du sol, la pression diminue d'environ 1 hPa tous les :", o:["8,5 m (28 ft)","85 m","1 m","850 m"], e:"Dans les basses couches, on retient 1 hPa ≈ 8,5 m ≈ 28 ft."},
+   {q:"À quelle altitude se trouve en moyenne la tropopause sous nos latitudes ?", o:["Environ 11 km","Environ 2 km","Environ 50 km","Environ 100 km"], e:"Vers 11 km aux latitudes moyennes, plus haut à l'équateur (16–17 km) et plus bas aux pôles (8 km)."}
+  ]},
+ {id:'nuages', title:'Nuages et brouillard', icon:'☁️', sub:'Familles de nuages, rosée, givrage',
+  slides:[
+   {e:'☁️', t:"Comment naît un nuage ?", b:"<p>Quand de l'air humide se refroidit (en montant, par exemple), il finit par atteindre son <b>point de rosée</b> : la température à laquelle il est <b>saturé</b>. La vapeur d'eau se condense alors en minuscules gouttelettes… et le nuage apparaît !</p>"},
+   {e:'🪜', t:"Trois étages de nuages", b:"<ul><li><b>Étage supérieur</b> (cirrus, cirrostratus…) : nuages fins faits de <b>cristaux de glace</b>.</li><li><b>Étage moyen</b> (altocumulus, altostratus).</li><li><b>Étage inférieur</b> (stratus, stratocumulus).</li></ul><p>Et un nuage qui traverse tous les étages : le <b>cumulonimbus</b>, le nuage d'<b>orage</b>, souvent coiffé d'une <b>enclume</b>. Les pilotes l'évitent absolument !</p>"},
+   {e:'🌫️', t:"Brouillard et givrage", b:"<p>Le <b>brouillard</b>, c'est un nuage posé au sol : la visibilité tombe <b>sous 1 km</b>. Le brouillard de rayonnement se forme surtout par <b>nuit claire et vent faible</b>, quand le sol se refroidit.</p><p>Le <b>givrage</b> : des gouttelettes restées liquides sous 0 °C (<b>eau surfondue</b>) gèlent au contact de l'avion. Danger !</p>"}
+  ],
+  qs:[
+   {q:"À quel étage appartiennent les cirrus ?", o:["L'étage supérieur","L'étage moyen","L'étage inférieur","Ce ne sont pas des nuages"], e:"Les cirrus sont des nuages élevés et fins, composés de cristaux de glace."},
+   {q:"Quel est le nuage d'orage ?", o:["Le cumulonimbus","Le cirrostratus","L'altocumulus","Le stratus"], e:"Le cumulonimbus, à fort développement vertical, produit orages, grêle, rafales et turbulences."},
+   {q:"Le sommet d'un cumulonimbus prend souvent la forme :", o:["D'une enclume","D'une boule","D'une lentille","D'un anneau"], e:"En butant contre la tropopause, le sommet s'étale en forme d'enclume."},
+   {q:"On parle de brouillard quand la visibilité est :", o:["Inférieure à 1 km","Inférieure à 10 km","Supérieure à 5 km","Le brouillard ne concerne pas la visibilité"], e:"Brouillard : visibilité inférieure à 1 km. Au-delà, on parle de brume."},
+   {q:"Le point de rosée, c'est :", o:["La température à laquelle l'air devient saturé","La température la plus basse de la nuit","La température de l'eau de pluie","L'altitude de la base des nuages"], e:"Si l'air se refroidit jusqu'à son point de rosée, la vapeur d'eau se condense."},
+   {q:"Le brouillard de rayonnement se forme surtout :", o:["Par nuit claire et vent faible","En plein après-midi ensoleillé","Par vent fort","Uniquement en pleine mer"], e:"Sans nuages, le sol perd sa chaleur la nuit et refroidit l'air au contact jusqu'à saturation."},
+   {q:"Le givrage sur un avion est surtout dû à :", o:["De l'eau surfondue (liquide sous 0 °C)","Un air très sec","Des températures au-dessus de 20 °C","Un vent arrière"], e:"Les gouttelettes surfondues gèlent instantanément en touchant l'avion, surtout entre 0 °C et environ −20 °C."}
+  ]},
+ {id:'vents', title:'Vents et fronts', icon:'🌬️', sub:'Direction du vent, anticyclones, fronts',
+  slides:[
+   {e:'🧭', t:"D'où vient le vent ?", b:"<p>En météo, on donne toujours la direction <b>d'où vient</b> le vent. Un « vent du 270° » ou « vent d'ouest » <b>vient de l'ouest</b>.</p><p>Sur une carte, les lignes qui relient les points de même pression s'appellent les <b>isobares</b>. Plus elles sont serrées, plus le vent est fort.</p>"},
+   {e:'🌀', t:"Anticyclones et dépressions", b:"<ul><li><b>Anticyclone</b> (haute pression, H) : temps plutôt <b>beau et stable</b>. Dans l'hémisphère Nord, le vent y tourne dans le <b>sens des aiguilles d'une montre</b>.</li><li><b>Dépression</b> (basse pression, D) : temps plutôt <b>perturbé</b>. Le vent tourne dans le <b>sens inverse</b>.</li></ul>"},
+   {e:'🏖️', t:"Brises et fronts", b:"<p>Au bord de la mer, le <b>jour</b> la terre chauffe plus vite : la <b>brise de mer</b> souffle de la mer vers la terre. La nuit, c'est l'inverse (brise de terre).</p><p>Un <b>front chaud</b> s'annonce par des <b>cirrus</b> puis donne une pluie continue. Un <b>front froid</b> apporte <b>averses</b> et <b>cumulonimbus</b>.</p>"}
+  ],
+  qs:[
+   {q:"Un « vent du 270° » :", o:["Vient de l'ouest","Va vers l'ouest","Vient de l'est","Vient du nord"], e:"La direction du vent indique toujours d'où il vient : 270° = ouest."},
+   {q:"Dans l'hémisphère Nord, autour d'une dépression, le vent tourne :", o:["Dans le sens inverse des aiguilles d'une montre","Dans le sens des aiguilles d'une montre","Il ne tourne pas","Ça dépend de l'heure"], e:"Hémisphère Nord : sens inverse autour des dépressions, sens horaire autour des anticyclones."},
+   {q:"Un anticyclone est généralement associé à :", o:["Un temps beau et stable","Des orages violents","Une pluie continue","Une tempête"], e:"L'air descend dans un anticyclone, ce qui limite la formation des nuages."},
+   {q:"La brise de mer souffle :", o:["Le jour, de la mer vers la terre","La nuit, de la terre vers la mer","Le jour, de la terre vers la mer","Toute la journée, parallèle à la côte"], e:"Le jour, la terre chauffe plus vite que la mer : l'air monte au-dessus de la terre et est remplacé par l'air marin."},
+   {q:"Le passage d'un front froid apporte typiquement :", o:["Des averses et des cumulonimbus","Un ciel sans aucun nuage","Uniquement du brouillard","Une hausse brutale de température"], e:"L'air froid soulève brutalement l'air chaud : nuages à développement vertical et averses."},
+   {q:"Quels nuages annoncent souvent l'arrivée d'un front chaud ?", o:["Les cirrus","Les cumulonimbus","Les stratus","Aucun nuage"], e:"L'air chaud glisse lentement au-dessus de l'air froid : les premiers signes sont des cirrus très élevés."},
+   {q:"Sur une carte météo, les lignes de même pression s'appellent :", o:["Des isobares","Des isothermes","Des méridiens","Des courbes de niveau"], e:"Iso = même, bare = pression. Les isothermes relient les points de même température."}
+  ]}
+];
+const OTHER = [
+ {e:'✈️', t:'Aérodynamique et principes du vol'},
+ {e:'🛩️', t:'Étude des aéronefs et engins spatiaux'},
+ {e:'🗺️', t:'Navigation, réglementation, sécurité'},
+ {e:'🚀', t:"Histoire de l'aéronautique et du spatial"},
+ {e:'🇬🇧', t:'Anglais aéronautique (option)'}
+];
+const BADGES = [
+ {id:'premier', e:'🛫', t:'Premier vol', d:'Réussis ta première leçon'},
+ {id:'parfait', e:'🎯', t:'Sans faute', d:'Fais 100 % à une leçon'},
+ {id:'serie3', e:'🔥', t:'En formation', d:'Série de 3 jours'},
+ {id:'serie7', e:'🌟', t:'Pilote assidu', d:'Série de 7 jours'},
+ {id:'meteo', e:'⛅', t:'Météorologue', d:'Réussis toutes les leçons Météo'},
+ {id:'exam', e:'🏅', t:'Prêt au décollage', d:'Au moins 75 % au mini-examen'},
+ {id:'xp200', e:'💎', t:'200 XP', d:'Cumule 200 XP'},
+ {id:'objectif', e:'🎉', t:'Objectif atteint', d:'Atteins ton objectif du jour'}
+];
+const DAILY_GOAL = 50, PASS = 0.7, EXAM_N = 10, EXAM_SEC = 6*60;
+
+// ====== ÉTAT (sauvegardé sur l'appareil) ======
+const KEY='gobiago-v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const fresh=()=>({started:false,xp:0,streak:0,best:0,last:null,days:[],daily:{d:null,xp:0},lessons:{},badges:[],examBest:null});
+let S=Object.assign(fresh(),load()||{});
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>ymd(new Date());
+const diff=(a,b)=>Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5);
+const streakNow=()=>(!S.last||diff(S.last,today())>1)?0:S.streak;
+const dailyXp=()=>S.daily.d===today()?S.daily.xp:0;
+function addXp(n){const t=today();if(S.daily.d!==t)S.daily={d:t,xp:0};S.daily.xp+=n;S.xp+=n}
+function markActive(){const t=today();if(S.last===t)return;S.streak=(S.last&&diff(S.last,t)===1)?S.streak+1:1;S.last=t;S.best=Math.max(S.best,S.streak);if(!S.days.includes(t))S.days.push(t);S.days=S.days.slice(-30)}
+const isDone=id=>S.lessons[id]&&S.lessons[id].passed;
+function checkBadges(ctx={}){
+  const got=[];const give=id=>{if(!S.badges.includes(id)){S.badges.push(id);got.push(BADGES.find(b=>b.id===id))}};
+  if(LESSONS.some(l=>isDone(l.id)))give('premier');
+  if(ctx.perfect)give('parfait');
+  if(S.streak>=3)give('serie3');
+  if(S.streak>=7)give('serie7');
+  if(LESSONS.every(l=>isDone(l.id)))give('meteo');
+  if(S.examBest!==null&&S.examBest>=0.75)give('exam');
+  if(S.xp>=200)give('xp200');
+  if(dailyXp()>=DAILY_GOAL)give('objectif');
+  return got;
+}
+
+// ====== OUTILS ======
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const prep=q=>{const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));return{q:q.q,e:q.e,opts,good:opts.find(o=>o.ok).t}};
+const $=h=>{document.getElementById('app').innerHTML=h;window.scrollTo(0,0)};
+let tab='home', L=null, E=null, resetArm=false;
+
+// ====== ÉCRANS PRINCIPAUX ======
+function topbar(){const s=streakNow();return `<div class="topbar"><div class="logo">Go BIA <span>Go</span></div><div class="chips"><div class="chip fire ${s?'':'off'}">🔥 ${s}</div><div class="chip xp">⭐ ${S.xp}</div></div></div>`}
+function nav(){const b=(id,e,t)=>`<button class="${tab===id?'on':''}" onclick="go('${id}')">${e}<small>${t}</small></button>`;return `<div class="nav">${b('home','🏠','Apprendre')}${b('badges','🏆','Badges')}${b('profil','👤','Profil')}</div>`}
+function go(t){tab=t;resetArm=false;render()}
+function render(){
+  if(!S.started)return welcome();
+  if(tab==='badges')return badgesView();
+  if(tab==='profil')return profilView();
+  home();
+}
+function welcome(){$(`<div class="welcome"><div class="plane">✈️</div><h1>Go BIA <span>Go</span></h1><p>Prépare ton Brevet d'Initiation Aéronautique en quelques minutes par jour. Leçons express, quiz, badges et séries de jours !</p><button class="btn" onclick="S.started=true;save();render()">C'est parti !</button></div>`)}
+function home(){
+  const dx=dailyXp(),pct=Math.min(100,dx/DAILY_GOAL*100);
+  const done=LESSONS.filter(l=>isDone(l.id)).length;
+  let nodes='';
+  LESSONS.forEach((l,i)=>{
+    const unlocked=i===0||isDone(LESSONS[i-1].id);
+    const st=isDone(l.id)?'done':unlocked?'avail':'locked';
+    const best=S.lessons[l.id]?`Meilleur : ${S.lessons[l.id].best}/${l.qs.length}`:l.sub;
+    const off=[0,-60,60][i%3];
+    nodes+=`<div class="node-wrap" style="transform:translateX(${off}px)"><button class="node ${st}" onclick="${st==='locked'?'':`startLesson(${i})`}">${st==='done'?'✓':st==='locked'?'🔒':l.icon}</button><div class="node-label">${l.title}<small>${best}</small></div></div>`;
+  });
+  const examOk=done===LESSONS.length;
+  nodes+=`<div class="node-wrap"><button class="node exam ${examOk?'avail':'locked'}" onclick="${examOk?'startExam()':''}">${examOk?'⏱️':'🔒'}</button><div class="node-label">Mini-examen<small>${examOk?(S.examBest!==null?`Meilleur : ${Math.round(S.examBest*100)} %`:`${EXAM_N} questions · 6 min`):'Réussis les 3 leçons'}</small></div></div>`;
+  $(`${topbar()}<div class="content">
+   <div class="card"><div class="goal-h"><b>🎯 Objectif du jour</b><small>${dx} / ${DAILY_GOAL} XP</small></div><div class="bar"><i style="width:${pct}%"></i></div></div>
+   <div class="module-head"><div><p>MODULE 1</p><h2>Météorologie</h2><p>${done} / ${LESSONS.length} leçons réussies</p></div><div class="big">⛅</div></div>
+   <div class="path">${nodes}</div>
+   <div class="soon"><h3>Prochains modules</h3>${OTHER.map(m=>`<div class="soon-item"><span class="ic">${m.e}</span>${m.t}<em>Bientôt</em></div>`).join('')}</div>
+  </div>${nav()}`);
+}
+function badgesView(){
+  $(`${topbar()}<div class="content"><div class="page-title">Mes badges</div><div class="page-sub">${S.badges.length} / ${BADGES.length} débloqués</div>
+  <div class="badges">${BADGES.map(b=>{const on=S.badges.includes(b.id);return `<div class="badge ${on?'on':'off'}"><div class="e">${b.e}</div><b>${b.t}</b><small>${b.d}</small></div>`}).join('')}</div></div>${nav()}`);
+}
+function profilView(){
+  const d=new Date();let week='';const jours=['D','L','M','M','J','V','S'];
+  for(let i=6;i>=0;i--){const x=new Date(d);x.setDate(d.getDate()-i);const on=S.days.includes(ymd(x));week+=`<div><span class="${on?'on':''}">${on?'🔥':''}</span>${jours[x.getDay()]}</div>`}
+  const done=LESSONS.filter(l=>isDone(l.id)).length;
+  $(`${topbar()}<div class="content"><div class="page-title">Mon profil</div><div class="page-sub">Élève pilote 👨‍✈️</div>
+  <div class="pstats">
+   <div class="pstat"><span class="e">🔥</span><div><b>${streakNow()}</b><small>Série en cours</small></div></div>
+   <div class="pstat"><span class="e">⚡</span><div><b>${S.best}</b><small>Meilleure série</small></div></div>
+   <div class="pstat"><span class="e">⭐</span><div><b>${S.xp}</b><small>XP au total</small></div></div>
+   <div class="pstat"><span class="e">📚</span><div><b>${done}/${LESSONS.length}</b><small>Leçons réussies</small></div></div>
+   <div class="pstat"><span class="e">⏱️</span><div><b>${S.examBest===null?'—':Math.round(S.examBest*100)+' %'}</b><small>Meilleur examen</small></div></div>
+   <div class="pstat"><span class="e">🏆</span><div><b>${S.badges.length}</b><small>Badges</small></div></div>
+  </div>
+  <div class="card"><b>Mes 7 derniers jours</b><div class="week">${week}</div></div>
+  <div class="card"><b>Progression du BIA</b><p style="font-size:13px;color:var(--mute);margin:4px 0 10px">Module Météo : ${Math.round(done/LESSONS.length*100)} %</p><div class="bar g"><i style="width:${done/LESSONS.length*100}%"></i></div></div>
+  ${installCard()}
+  <button class="btn ${resetArm?'red':'ghost'}" onclick="doReset()">${resetArm?'Confirmer : tout effacer':'Réinitialiser ma progression'}</button>
+  <p class="note">Prototype : ta progression est enregistrée uniquement sur cet appareil et dans ce navigateur. Contenu de démonstration rédigé pour le prototype, à faire relire par un instructeur avant mise en ligne.</p>
+  </div>${nav()}`);
+}
+function doReset(){if(!resetArm){resetArm=true;return render()}S=fresh();S.started=true;save();resetArm=false;tab='home';render()}
+
+// ====== LEÇON ======
+function startLesson(i){const l=LESSONS[i];L={i,l,phase:'slides',s:0,qs:shuffle(l.qs).map(prep),k:0,sel:null,checked:false,score:0,xp:0};lessonView()}
+function quit(){L=null;E&&clearInterval(E.timer);E=null;render()}
+function lessonView(){
+  const l=L.l,total=l.slides.length+L.qs.length;
+  const pos=L.phase==='slides'?L.s:l.slides.length+L.k+(L.checked?1:0);
+  const top=`<div class="l-top"><button class="x" onclick="quit()">✕</button><div class="bar g"><i style="width:${pos/total*100}%"></i></div></div>`;
+  if(L.phase==='slides'){
+    const s=l.slides[L.s];
+    return $(`<div class="lesson">${top}<div class="l-body slide"><div class="slide-emoji">${s.e}</div><h2>${s.t}</h2>${s.b}</div><div class="l-foot"><button class="btn blue" onclick="nextSlide()">${L.s<l.slides.length-1?'Continuer':'Je passe au quiz !'}</button></div></div>`);
+  }
+  if(L.phase==='end')return endView();
+  const q=L.qs[L.k];
+  const opts=q.opts.map((o,j)=>{let c='';if(L.checked){if(o.ok)c='ok';else if(j===L.sel)c='ko'}else if(j===L.sel)c='sel';return `<button class="opt ${c}" onclick="pick(${j})">${o.t}</button>`}).join('');
+  let foot;
+  if(!L.checked)foot=`<div class="l-foot"><button class="btn" ${L.sel===null?'disabled':''} onclick="check()">Vérifier</button></div>`;
+  else{const ok=q.opts[L.sel].ok;foot=`<div class="l-foot ${ok?'good':'bad'}"><div class="fb-title">${ok?'Bravo ! +10 XP':'Pas tout à fait…'}</div><div class="fb-text">${ok?'':'Bonne réponse : <b>'+q.good+'</b><br>'}${q.e}</div><button class="btn ${ok?'':'red'}" onclick="nextQ()">Continuer</button></div>`}
+  $(`<div class="lesson">${top}<div class="l-body"><div class="q-kind">Question ${L.k+1} / ${L.qs.length}</div><div class="q-text">${q.q}</div>${opts}</div>${foot}</div>`);
+}
+function nextSlide(){if(L.s<L.l.slides.length-1)L.s++;else L.phase='quiz';lessonView()}
+function pick(j){if(L.checked)return;L.sel=j;lessonView()}
+function check(){if(L.sel===null)return;L.checked=true;if(L.qs[L.k].opts[L.sel].ok){L.score++;L.xp+=10}lessonView()}
+function nextQ(){if(L.k<L.qs.length-1){L.k++;L.sel=null;L.checked=false;return lessonView()}finishLesson()}
+function finishLesson(){
+  const l=L.l,n=L.qs.length,perfect=L.score===n,passed=L.score/n>=PASS;
+  if(perfect)L.xp+=10;
+  addXp(L.xp);markActive();
+  const prev=S.lessons[l.id]||{best:0,passed:false};
+  S.lessons[l.id]={best:Math.max(prev.best,L.score),passed:prev.passed||passed};
+  L.passed=passed;L.perfect=perfect;L.newB=checkBadges({perfect});save();L.phase='end';lessonView();
+}
+function endView(){
+  const n=L.qs.length;
+  $(`<div class="end"><div class="trophy">${L.perfect?'🏆':L.passed?'🎉':'💪'}</div><h2>${L.perfect?'Sans faute !':L.passed?'Leçon réussie !':'Presque !'}</h2><p class="sub">${L.passed?L.l.title+' validée':'Il faut 70 % pour valider. Tu vas y arriver !'}</p>
+  <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${L.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${L.score}/${n}</div></div><div class="stat o"><div class="h">Série</div><div class="v">🔥 ${streakNow()}</div></div></div>
+  ${badgeBox(L.newB)}
+  <button class="btn" onclick="quit()">Continuer</button>${L.passed?'':`<button class="btn ghost" onclick="startLesson(${L.i})">Recommencer</button>`}</div>`);
+}
+const badgeBox=b=>b&&b.length?`<div class="newb"><h3>Nouveau badge !</h3>${b.map(x=>`<div>${x.e} ${x.t}</div>`).join('')}</div>`:'';
+
+// ====== MINI-EXAMEN ======
+function startExam(){
+  const all=LESSONS.flatMap(l=>l.qs);
+  E={qs:shuffle(all).slice(0,EXAM_N).map(prep),k:0,ans:[],sel:null,left:EXAM_SEC,done:false};
+  E.timer=setInterval(()=>{E.left--;const t=document.getElementById('tm');if(t)t.textContent=fmt(E.left);if(E.left<=0)finishExam()},1000);
+  examView();
+}
+const fmt=s=>Math.floor(Math.max(0,s)/60)+':'+pad(Math.max(0,s)%60);
+function examView(){
+  if(E.done)return examEnd();
+  const q=E.qs[E.k];
+  $(`<div class="lesson"><div class="l-top"><button class="x" onclick="quit()">✕</button><div class="bar"><i style="width:${E.k/E.qs.length*100}%;background:var(--orange)"></i></div><div class="timer" id="tm">${fmt(E.left)}</div></div>
+  <div class="l-body"><div class="q-kind" style="color:var(--orange)">Examen · ${E.k+1} / ${E.qs.length}</div><div class="q-text">${q.q}</div>${q.opts.map((o,j)=>`<button class="opt ${j===E.sel?'sel':''}" onclick="E.sel=${j};examView()">${o.t}</button>`).join('')}</div>
+  <div class="l-foot"><button class="btn blue" ${E.sel===null?'disabled':''} onclick="examNext()">${E.k<E.qs.length-1?'Suivante':'Terminer'}</button></div></div>`);
+}
+function examNext(){if(E.sel===null)return;E.ans[E.k]=E.sel;if(E.k<E.qs.length-1){E.k++;E.sel=null;return examView()}finishExam()}
+function finishExam(){
+  if(E.done)return;clearInterval(E.timer);E.done=true;
+  E.score=E.qs.filter((q,i)=>E.ans[i]!==undefined&&q.opts[E.ans[i]].ok).length;
+  E.xp=E.score*5;addXp(E.xp);markActive();
+  const r=E.score/E.qs.length;S.examBest=S.examBest===null?r:Math.max(S.examBest,r);
+  E.newB=checkBadges();save();examView();
+}
+function examEnd(){
+  const r=E.score/E.qs.length,ok=r>=0.75;
+  const wrong=E.qs.map((q,i)=>({q,a:E.ans[i]})).filter(x=>x.a===undefined||!x.q.opts[x.a].ok);
+  $(`<div class="end"><div class="trophy">${ok?'🏅':'📖'}</div><h2>${Math.round(r*100)} %</h2><p class="sub">${ok?'Excellent, tu es prêt pour la météo du BIA !':'Revois les points ci-dessous et retente ta chance.'}</p>
+  <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${E.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${E.score}/${E.qs.length}</div></div><div class="stat o"><div class="h">Temps</div><div class="v">${fmt(EXAM_SEC-E.left)}</div></div></div>
+  ${badgeBox(E.newB)}
+  ${wrong.length?`<div class="review"><h3 style="font-weight:900;margin-bottom:10px">À revoir (${wrong.length})</h3>${wrong.map(x=>`<div class="r"><b>${x.q.q}</b>${x.a!==undefined?`<div class="ko">${x.q.opts[x.a].t}</div>`:'<div class="ko">Pas de réponse</div>'}<div class="ok">✓ ${x.q.good}</div><div style="color:#777;margin-top:4px">${x.q.e}</div></div>`).join('')}</div>`:''}
+  <button class="btn" onclick="quit()">Continuer</button><button class="btn ghost" onclick="startExam()">Nouvel examen</button></div>`);
+}
+// ====== INSTALLATION SUR LE TÉLÉPHONE (PWA) ======
+let installEvt=null;
+const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(tab==='profil'&&!L&&!E)render()});
+window.addEventListener('appinstalled',()=>{installEvt=null;render()});
+function installCard(){
+  if(standalone())return '';
+  if(installEvt)return `<div class="card"><b>📲 Installer l'appli</b><p style="font-size:14px;color:#777;margin:6px 0 12px">Ajoute Go BIA Go à ton écran d'accueil, même sans connexion.</p><button class="btn blue" onclick="doInstall()">Installer</button></div>`;
+  if(isIOS())return `<div class="card"><b>📲 Installer l'appli</b><p style="font-size:14px;color:#777;margin-top:6px;line-height:1.45">Dans Safari, touche le bouton <b>Partager</b> (carré avec une flèche), puis <b>« Sur l'écran d'accueil »</b>.</p></div>`;
+  return '';
+}
+async function doInstall(){if(!installEvt)return;installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;render()}
+if('serviceWorker' in navigator&&location.protocol==='https:'){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})});
+}
+render();
+</script>
+</body>
+</html>
