@@ -20,6 +20,8 @@ Appli web gratuite (PWA) pour préparer le Brevet d'Initiation Aéronautique : l
 
 ## Ajouter des questions
 
+Tout le contenu (modules, leçons, questions, lexique) est dans `content.js`.
+
 Dans `index.html`, chaque leçon contient une liste `qs`. **La bonne réponse est toujours la première** de la liste `o` : l'appli mélange les réponses toute seule.
 
 ```js

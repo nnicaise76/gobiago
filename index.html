@@ -138,84 +138,63 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .welcome h1{font-size:34px;font-weight:900;color:var(--blue);margin:18px 0 10px}
 .welcome h1 span{color:var(--green)}
 .welcome p{font-size:17px;color:#777;margin-bottom:34px;line-height:1.45}
+.slide ol{padding-left:22px}
+.slide i{font-style:italic}
+.sec-title{font-size:15px;font-weight:900;color:var(--mute);text-transform:uppercase;letter-spacing:.5px;margin:6px 0 10px}
+.mcard{display:flex;align-items:center;gap:14px;padding:14px;border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;margin-bottom:12px;width:100%;text-align:left;background:#fff}
+.mcard:active{transform:translateY(2px)}
+.mcard .ic{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.mcard .tx{flex:1;min-width:0}
+.mcard .tx small{display:block;color:var(--mute);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.3px}
+.mcard .tx b{display:block;font-size:16px;font-weight:900;line-height:1.2;margin:1px 0 7px}
+.mcard .bar{height:10px}
+.mcard .cnt{font-size:13px;font-weight:900;color:var(--mute);margin-left:4px}
+.mcard .done-tag{font-size:22px}
+.exam-card{background:linear-gradient(135deg,#FFC800,#FF9600);color:#fff;border-radius:16px;padding:16px;margin-bottom:22px;box-shadow:0 5px 0 #D97F00;display:flex;align-items:center;gap:14px;width:100%;text-align:left}
+.exam-card:active{transform:translateY(3px);box-shadow:0 2px 0 #D97F00}
+.exam-card .e{font-size:38px}
+.exam-card b{display:block;font-size:18px;font-weight:900}
+.exam-card small{font-size:13px;font-weight:800;opacity:.95}
+.back{font-size:15px;font-weight:900;color:var(--mute);margin-bottom:14px;display:inline-flex;align-items:center;gap:6px;padding:4px 0}
+.path .node.avail{background:var(--mc,var(--blue));box-shadow:0 7px 0 var(--md,var(--blue-d))}
+.path .node.avail::after{border-color:var(--mc,var(--blue))}
+.path .node.exam.avail{background:var(--yellow);box-shadow:0 7px 0 #E0A800}
+.path .node.exam.avail::after{border-color:var(--yellow)}
+.search{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:14px;font-family:inherit;font-size:16px;font-weight:700;margin:14px 0 10px;outline:none;background:var(--soft)}
+.search:focus{border-color:#84D8FF;background:#fff}
+.filters{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px;scrollbar-width:none}
+.filters button{padding:7px 12px;border:2px solid var(--line);border-radius:20px;font-size:13px;font-weight:800;white-space:nowrap;background:#fff}
+.filters button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.term{border-bottom:2px solid var(--line);padding:12px 2px}
+.term b{font-weight:900;font-size:16px}
+.term b span{font-size:13px;margin-left:6px}
+.term p{font-weight:600;color:#666;font-size:14.5px;margin-top:3px;line-height:1.4}
+.empty{color:var(--mute);text-align:center;padding:24px 0}
+.mprog{margin-bottom:12px}
+.mprog div{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px}
+.mprog small{color:var(--mute)}
 </style>
 </head>
 <body>
 <div id="app"></div>
+<script src="/content.js"></script>
 <script>
-// ====== CONTENU : module Météorologie (contenu original, prototype) ======
-const LESSONS = [
- {id:'atm', title:"L'atmosphère", icon:'🌍', sub:'Composition, couches, atmosphère type',
-  slides:[
-   {e:'🌍', t:"L'air qu'on respire", b:"<p>L'atmosphère est l'enveloppe de gaz qui entoure la Terre. Elle contient environ <b>78 % d'azote</b> et <b>21 % d'oxygène</b>. Le reste : argon, gaz carbonique… et un peu de <b>vapeur d'eau</b>, indispensable à la formation des nuages.</p>"},
-   {e:'🏔️', t:"Des couches empilées", b:"<p>La couche du bas s'appelle la <b>troposphère</b>. C'est là que se passe presque toute la météo : nuages, pluie, orages. Son plafond, la <b>tropopause</b>, est vers <b>11 km</b> d'altitude chez nous (plus haut à l'équateur, plus bas aux pôles).</p><p>Au-dessus : la stratosphère, puis la mésosphère et la thermosphère.</p>"},
-   {e:'🌡️', t:"L'atmosphère type (ISA)", b:"<p>Pour comparer les avions et régler les instruments, on utilise une atmosphère « modèle » :</p><ul><li>au niveau de la mer : <b>15 °C</b> et <b>1013,25 hPa</b></li><li>la température baisse de <b>6,5 °C tous les 1 000 m</b></li><li>près du sol, la pression baisse d'environ <b>1 hPa tous les 8,5 m</b> (28 ft)</li></ul><div class='tip'>💡 Astuce : à 2 000 m en atmosphère type, il fait 15 − 13 = 2 °C.</div>"}
-  ],
-  qs:[
-   {q:"Quel est le gaz le plus abondant dans l'air ?", o:["L'azote","L'oxygène","Le gaz carbonique","La vapeur d'eau"], e:"L'air contient environ 78 % d'azote et 21 % d'oxygène."},
-   {q:"Dans quelle couche se produisent la plupart des phénomènes météo ?", o:["La troposphère","La stratosphère","La mésosphère","La thermosphère"], e:"La troposphère contient presque toute la vapeur d'eau : c'est là que naissent nuages et précipitations."},
-   {q:"Au niveau de la mer, l'atmosphère type (ISA) donne :", o:["15 °C et 1013,25 hPa","0 °C et 1000 hPa","20 °C et 1013,25 hPa","15 °C et 1000 hPa"], e:"Les valeurs de référence ISA au niveau de la mer sont 15 °C et 1013,25 hPa."},
-   {q:"En atmosphère type, la température diminue avec l'altitude de :", o:["6,5 °C par 1 000 m","1 °C par 1 000 m","10 °C par 100 m","Elle ne diminue pas"], e:"Le gradient de l'atmosphère type est de −6,5 °C par 1 000 m (soit environ −2 °C par 1 000 ft)."},
-   {q:"En atmosphère type, quelle température fait-il à 2 000 m ?", o:["2 °C","15 °C","8,5 °C","−13 °C"], e:"15 °C − (2 × 6,5 °C) = 15 − 13 = 2 °C."},
-   {q:"Près du sol, la pression diminue d'environ 1 hPa tous les :", o:["8,5 m (28 ft)","85 m","1 m","850 m"], e:"Dans les basses couches, on retient 1 hPa ≈ 8,5 m ≈ 28 ft."},
-   {q:"À quelle altitude se trouve en moyenne la tropopause sous nos latitudes ?", o:["Environ 11 km","Environ 2 km","Environ 50 km","Environ 100 km"], e:"Vers 11 km aux latitudes moyennes, plus haut à l'équateur (16–17 km) et plus bas aux pôles (8 km)."}
-  ]},
- {id:'nuages', title:'Nuages et brouillard', icon:'☁️', sub:'Familles de nuages, rosée, givrage',
-  slides:[
-   {e:'☁️', t:"Comment naît un nuage ?", b:"<p>Quand de l'air humide se refroidit (en montant, par exemple), il finit par atteindre son <b>point de rosée</b> : la température à laquelle il est <b>saturé</b>. La vapeur d'eau se condense alors en minuscules gouttelettes… et le nuage apparaît !</p>"},
-   {e:'🪜', t:"Trois étages de nuages", b:"<ul><li><b>Étage supérieur</b> (cirrus, cirrostratus…) : nuages fins faits de <b>cristaux de glace</b>.</li><li><b>Étage moyen</b> (altocumulus, altostratus).</li><li><b>Étage inférieur</b> (stratus, stratocumulus).</li></ul><p>Et un nuage qui traverse tous les étages : le <b>cumulonimbus</b>, le nuage d'<b>orage</b>, souvent coiffé d'une <b>enclume</b>. Les pilotes l'évitent absolument !</p>"},
-   {e:'🌫️', t:"Brouillard et givrage", b:"<p>Le <b>brouillard</b>, c'est un nuage posé au sol : la visibilité tombe <b>sous 1 km</b>. Le brouillard de rayonnement se forme surtout par <b>nuit claire et vent faible</b>, quand le sol se refroidit.</p><p>Le <b>givrage</b> : des gouttelettes restées liquides sous 0 °C (<b>eau surfondue</b>) gèlent au contact de l'avion. Danger !</p>"}
-  ],
-  qs:[
-   {q:"À quel étage appartiennent les cirrus ?", o:["L'étage supérieur","L'étage moyen","L'étage inférieur","Ce ne sont pas des nuages"], e:"Les cirrus sont des nuages élevés et fins, composés de cristaux de glace."},
-   {q:"Quel est le nuage d'orage ?", o:["Le cumulonimbus","Le cirrostratus","L'altocumulus","Le stratus"], e:"Le cumulonimbus, à fort développement vertical, produit orages, grêle, rafales et turbulences."},
-   {q:"Le sommet d'un cumulonimbus prend souvent la forme :", o:["D'une enclume","D'une boule","D'une lentille","D'un anneau"], e:"En butant contre la tropopause, le sommet s'étale en forme d'enclume."},
-   {q:"On parle de brouillard quand la visibilité est :", o:["Inférieure à 1 km","Inférieure à 10 km","Supérieure à 5 km","Le brouillard ne concerne pas la visibilité"], e:"Brouillard : visibilité inférieure à 1 km. Au-delà, on parle de brume."},
-   {q:"Le point de rosée, c'est :", o:["La température à laquelle l'air devient saturé","La température la plus basse de la nuit","La température de l'eau de pluie","L'altitude de la base des nuages"], e:"Si l'air se refroidit jusqu'à son point de rosée, la vapeur d'eau se condense."},
-   {q:"Le brouillard de rayonnement se forme surtout :", o:["Par nuit claire et vent faible","En plein après-midi ensoleillé","Par vent fort","Uniquement en pleine mer"], e:"Sans nuages, le sol perd sa chaleur la nuit et refroidit l'air au contact jusqu'à saturation."},
-   {q:"Le givrage sur un avion est surtout dû à :", o:["De l'eau surfondue (liquide sous 0 °C)","Un air très sec","Des températures au-dessus de 20 °C","Un vent arrière"], e:"Les gouttelettes surfondues gèlent instantanément en touchant l'avion, surtout entre 0 °C et environ −20 °C."}
-  ]},
- {id:'vents', title:'Vents et fronts', icon:'🌬️', sub:'Direction du vent, anticyclones, fronts',
-  slides:[
-   {e:'🧭', t:"D'où vient le vent ?", b:"<p>En météo, on donne toujours la direction <b>d'où vient</b> le vent. Un « vent du 270° » ou « vent d'ouest » <b>vient de l'ouest</b>.</p><p>Sur une carte, les lignes qui relient les points de même pression s'appellent les <b>isobares</b>. Plus elles sont serrées, plus le vent est fort.</p>"},
-   {e:'🌀', t:"Anticyclones et dépressions", b:"<ul><li><b>Anticyclone</b> (haute pression, H) : temps plutôt <b>beau et stable</b>. Dans l'hémisphère Nord, le vent y tourne dans le <b>sens des aiguilles d'une montre</b>.</li><li><b>Dépression</b> (basse pression, D) : temps plutôt <b>perturbé</b>. Le vent tourne dans le <b>sens inverse</b>.</li></ul>"},
-   {e:'🏖️', t:"Brises et fronts", b:"<p>Au bord de la mer, le <b>jour</b> la terre chauffe plus vite : la <b>brise de mer</b> souffle de la mer vers la terre. La nuit, c'est l'inverse (brise de terre).</p><p>Un <b>front chaud</b> s'annonce par des <b>cirrus</b> puis donne une pluie continue. Un <b>front froid</b> apporte <b>averses</b> et <b>cumulonimbus</b>.</p>"}
-  ],
-  qs:[
-   {q:"Un « vent du 270° » :", o:["Vient de l'ouest","Va vers l'ouest","Vient de l'est","Vient du nord"], e:"La direction du vent indique toujours d'où il vient : 270° = ouest."},
-   {q:"Dans l'hémisphère Nord, autour d'une dépression, le vent tourne :", o:["Dans le sens inverse des aiguilles d'une montre","Dans le sens des aiguilles d'une montre","Il ne tourne pas","Ça dépend de l'heure"], e:"Hémisphère Nord : sens inverse autour des dépressions, sens horaire autour des anticyclones."},
-   {q:"Un anticyclone est généralement associé à :", o:["Un temps beau et stable","Des orages violents","Une pluie continue","Une tempête"], e:"L'air descend dans un anticyclone, ce qui limite la formation des nuages."},
-   {q:"La brise de mer souffle :", o:["Le jour, de la mer vers la terre","La nuit, de la terre vers la mer","Le jour, de la terre vers la mer","Toute la journée, parallèle à la côte"], e:"Le jour, la terre chauffe plus vite que la mer : l'air monte au-dessus de la terre et est remplacé par l'air marin."},
-   {q:"Le passage d'un front froid apporte typiquement :", o:["Des averses et des cumulonimbus","Un ciel sans aucun nuage","Uniquement du brouillard","Une hausse brutale de température"], e:"L'air froid soulève brutalement l'air chaud : nuages à développement vertical et averses."},
-   {q:"Quels nuages annoncent souvent l'arrivée d'un front chaud ?", o:["Les cirrus","Les cumulonimbus","Les stratus","Aucun nuage"], e:"L'air chaud glisse lentement au-dessus de l'air froid : les premiers signes sont des cirrus très élevés."},
-   {q:"Sur une carte météo, les lignes de même pression s'appellent :", o:["Des isobares","Des isothermes","Des méridiens","Des courbes de niveau"], e:"Iso = même, bare = pression. Les isothermes relient les points de même température."}
-  ]}
-];
-const OTHER = [
- {e:'✈️', t:'Aérodynamique et principes du vol'},
- {e:'🛩️', t:'Étude des aéronefs et engins spatiaux'},
- {e:'🗺️', t:'Navigation, réglementation, sécurité'},
- {e:'🚀', t:"Histoire de l'aéronautique et du spatial"},
- {e:'🇬🇧', t:'Anglais aéronautique (option)'}
-];
-const BADGES = [
- {id:'premier', e:'🛫', t:'Premier vol', d:'Réussis ta première leçon'},
- {id:'parfait', e:'🎯', t:'Sans faute', d:'Fais 100 % à une leçon'},
- {id:'serie3', e:'🔥', t:'En formation', d:'Série de 3 jours'},
- {id:'serie7', e:'🌟', t:'Pilote assidu', d:'Série de 7 jours'},
- {id:'meteo', e:'⛅', t:'Météorologue', d:'Réussis toutes les leçons Météo'},
- {id:'exam', e:'🏅', t:'Prêt au décollage', d:'Au moins 75 % au mini-examen'},
- {id:'xp200', e:'💎', t:'200 XP', d:'Cumule 200 XP'},
- {id:'objectif', e:'🎉', t:'Objectif atteint', d:'Atteins ton objectif du jour'}
-];
-const DAILY_GOAL = 50, PASS = 0.7, EXAM_N = 10, EXAM_SEC = 6*60;
+// ================================================================
+//  GO BIA GO — moteur de l'appli (le contenu est dans content.js)
+// ================================================================
+const DAILY_GOAL=50, PASS=0.7;
+const EXAMS={mod:{n:10,sec:6*60}, blanc:{perMod:4,sec:15*60}};
 
 // ====== ÉTAT (sauvegardé sur l'appareil) ======
 const KEY='gobiago-v1';
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-const fresh=()=>({started:false,xp:0,streak:0,best:0,last:null,days:[],daily:{d:null,xp:0},lessons:{},badges:[],examBest:null});
+const fresh=()=>({started:false,xp:0,streak:0,best:0,last:null,days:[],daily:{d:null,xp:0},lessons:{},badges:[],exams:{},blanc:null,glossBest:0});
 let S=Object.assign(fresh(),load()||{});
+if(!S.exams)S.exams={};
+if(S.examBest!=null&&S.exams.meteo==null)S.exams.meteo=S.examBest; // ancienne version (Météo seule)
+delete S.examBest;
+
 const pad=n=>String(n).padStart(2,'0');
 const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const today=()=>ymd(new Date());
@@ -224,17 +203,40 @@ const streakNow=()=>(!S.last||diff(S.last,today())>1)?0:S.streak;
 const dailyXp=()=>S.daily.d===today()?S.daily.xp:0;
 function addXp(n){const t=today();if(S.daily.d!==t)S.daily={d:t,xp:0};S.daily.xp+=n;S.xp+=n}
 function markActive(){const t=today();if(S.last===t)return;S.streak=(S.last&&diff(S.last,t)===1)?S.streak+1:1;S.last=t;S.best=Math.max(S.best,S.streak);if(!S.days.includes(t))S.days.push(t);S.days=S.days.slice(-30)}
-const isDone=id=>S.lessons[id]&&S.lessons[id].passed;
+const isDone=id=>!!(S.lessons[id]&&S.lessons[id].passed);
+const modDone=m=>m.lessons.filter(l=>isDone(l.id)).length;
+const ALL_LESSONS=MODULES.flatMap(m=>m.lessons);
+const pct=r=>Math.round(r*100)+' %';
+
+// ====== BADGES ======
+const BADGES=[
+ {id:'premier',e:'🛫',t:'Premier vol',d:'Réussis ta première leçon'},
+ {id:'parfait',e:'🎯',t:'Sans faute',d:'Fais 100 % à une leçon'},
+ {id:'serie3',e:'🔥',t:'En formation',d:'Série de 3 jours'},
+ {id:'serie7',e:'🌟',t:'Pilote assidu',d:'Série de 7 jours'},
+ {id:'objectif',e:'🎉',t:'Objectif atteint',d:'Atteins ton objectif du jour'},
+ {id:'xp200',e:'💎',t:'200 XP',d:'Cumule 200 XP'},
+ {id:'xp1000',e:'👑',t:'1 000 XP',d:'Cumule 1 000 XP'},
+ ...MODULES.map(m=>({id:m.badge.id,e:m.badge.e,t:m.badge.t,d:'Réussis toutes les leçons '+m.short})),
+ {id:'exam',e:'🏅',t:'Prêt au décollage',d:'Au moins 75 % à un examen de module'},
+ {id:'blanc',e:'🎓',t:'Prêt pour le BIA',d:"Au moins 75 % à l'examen blanc"},
+ {id:'lexique',e:'📖',t:'Dico vivant',d:'10/10 au quiz de vocabulaire'},
+ {id:'commandant',e:'👨‍✈️',t:'Commandant de bord',d:'Réussis toutes les leçons du BIA'}
+];
 function checkBadges(ctx={}){
   const got=[];const give=id=>{if(!S.badges.includes(id)){S.badges.push(id);got.push(BADGES.find(b=>b.id===id))}};
-  if(LESSONS.some(l=>isDone(l.id)))give('premier');
+  if(ALL_LESSONS.some(l=>isDone(l.id)))give('premier');
   if(ctx.perfect)give('parfait');
   if(S.streak>=3)give('serie3');
   if(S.streak>=7)give('serie7');
-  if(LESSONS.every(l=>isDone(l.id)))give('meteo');
-  if(S.examBest!==null&&S.examBest>=0.75)give('exam');
-  if(S.xp>=200)give('xp200');
   if(dailyXp()>=DAILY_GOAL)give('objectif');
+  if(S.xp>=200)give('xp200');
+  if(S.xp>=1000)give('xp1000');
+  MODULES.forEach(m=>{if(modDone(m)===m.lessons.length)give(m.badge.id)});
+  if(Object.values(S.exams).some(r=>r>=0.75))give('exam');
+  if(S.blanc!==null&&S.blanc>=0.75)give('blanc');
+  if(S.glossBest>=10)give('lexique');
+  if(ALL_LESSONS.every(l=>isDone(l.id)))give('commandant');
   return got;
 }
 
@@ -242,110 +244,164 @@ function checkBadges(ctx={}){
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const prep=q=>{const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));return{q:q.q,e:q.e,opts,good:opts.find(o=>o.ok).t}};
 const $=h=>{document.getElementById('app').innerHTML=h;window.scrollTo(0,0)};
-let tab='home', L=null, E=null, resetArm=false;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let tab='home', mod=null, L=null, E=null, resetArm=false, gf='all', gq='';
 
-// ====== ÉCRANS PRINCIPAUX ======
+// ====== NAVIGATION ======
 function topbar(){const s=streakNow();return `<div class="topbar"><div class="logo">Go BIA <span>Go</span></div><div class="chips"><div class="chip fire ${s?'':'off'}">🔥 ${s}</div><div class="chip xp">⭐ ${S.xp}</div></div></div>`}
-function nav(){const b=(id,e,t)=>`<button class="${tab===id?'on':''}" onclick="go('${id}')">${e}<small>${t}</small></button>`;return `<div class="nav">${b('home','🏠','Apprendre')}${b('badges','🏆','Badges')}${b('profil','👤','Profil')}</div>`}
-function go(t){tab=t;resetArm=false;render()}
+function nav(){const b=(id,e,t)=>`<button class="${tab===id?'on':''}" onclick="go('${id}')">${e}<small>${t}</small></button>`;return `<div class="nav">${b('home','🏠','Apprendre')}${b('lexique','📖','Lexique')}${b('badges','🏆','Badges')}${b('profil','👤','Profil')}</div>`}
+function go(t){if(t==='home'&&tab==='home')mod=null;tab=t;resetArm=false;render()}
+function openMod(i){mod=i;render()}
 function render(){
   if(!S.started)return welcome();
+  if(tab==='lexique')return lexiqueView();
   if(tab==='badges')return badgesView();
   if(tab==='profil')return profilView();
-  home();
+  mod===null?modulesView():moduleView(mod);
 }
 function welcome(){$(`<div class="welcome"><div class="plane">✈️</div><h1>Go BIA <span>Go</span></h1><p>Prépare ton Brevet d'Initiation Aéronautique en quelques minutes par jour. Leçons express, quiz, badges et séries de jours !</p><button class="btn" onclick="S.started=true;save();render()">C'est parti !</button></div>`)}
-function home(){
-  const dx=dailyXp(),pct=Math.min(100,dx/DAILY_GOAL*100);
-  const done=LESSONS.filter(l=>isDone(l.id)).length;
-  let nodes='';
-  LESSONS.forEach((l,i)=>{
-    const unlocked=i===0||isDone(LESSONS[i-1].id);
-    const st=isDone(l.id)?'done':unlocked?'avail':'locked';
-    const best=S.lessons[l.id]?`Meilleur : ${S.lessons[l.id].best}/${l.qs.length}`:l.sub;
-    const off=[0,-60,60][i%3];
-    nodes+=`<div class="node-wrap" style="transform:translateX(${off}px)"><button class="node ${st}" onclick="${st==='locked'?'':`startLesson(${i})`}">${st==='done'?'✓':st==='locked'?'🔒':l.icon}</button><div class="node-label">${l.title}<small>${best}</small></div></div>`;
-  });
-  const examOk=done===LESSONS.length;
-  nodes+=`<div class="node-wrap"><button class="node exam ${examOk?'avail':'locked'}" onclick="${examOk?'startExam()':''}">${examOk?'⏱️':'🔒'}</button><div class="node-label">Mini-examen<small>${examOk?(S.examBest!==null?`Meilleur : ${Math.round(S.examBest*100)} %`:`${EXAM_N} questions · 6 min`):'Réussis les 3 leçons'}</small></div></div>`;
+
+// ====== ÉCRAN : LISTE DES MODULES ======
+function modulesView(){
+  const dx=dailyXp();
+  const cards=MODULES.map((m,i)=>{const d=modDone(m),n=m.lessons.length;return `<button class="mcard" onclick="openMod(${i})"><div class="ic" style="background:${m.c}22">${m.icon}</div><div class="tx"><small>Module ${m.n}</small><b>${m.title}</b><div style="display:flex;align-items:center"><div class="bar" style="flex:1"><i style="width:${d/n*100}%;background:${m.c}"></i></div><span class="cnt">${d}/${n}</span></div></div>${d===n?'<span class="done-tag">✅</span>':''}</button>`}).join('');
+  const nq=MODULES.length*EXAMS.blanc.perMod;
   $(`${topbar()}<div class="content">
-   <div class="card"><div class="goal-h"><b>🎯 Objectif du jour</b><small>${dx} / ${DAILY_GOAL} XP</small></div><div class="bar"><i style="width:${pct}%"></i></div></div>
-   <div class="module-head"><div><p>MODULE 1</p><h2>Météorologie</h2><p>${done} / ${LESSONS.length} leçons réussies</p></div><div class="big">⛅</div></div>
-   <div class="path">${nodes}</div>
-   <div class="soon"><h3>Prochains modules</h3>${OTHER.map(m=>`<div class="soon-item"><span class="ic">${m.e}</span>${m.t}<em>Bientôt</em></div>`).join('')}</div>
+   <div class="card"><div class="goal-h"><b>🎯 Objectif du jour</b><small>${dx} / ${DAILY_GOAL} XP</small></div><div class="bar"><i style="width:${Math.min(100,dx/DAILY_GOAL*100)}%"></i></div></div>
+   <button class="exam-card" onclick="startExam('blanc')"><span class="e">🎓</span><div><b>Examen blanc BIA</b><small>${nq} questions sur tout le programme · ${EXAMS.blanc.sec/60} min${S.blanc!==null?' · Meilleur : '+pct(S.blanc):''}</small></div></button>
+   <div class="sec-title">Les modules</div>${cards}
+   <button class="mcard" onclick="go('lexique')"><div class="ic" style="background:#58CC0222">📖</div><div class="tx"><small>Bonus</small><b>Lexique et quiz de vocabulaire</b><small style="text-transform:none">${GLOSSARY.length} termes à connaître</small></div></button>
   </div>${nav()}`);
 }
+
+// ====== ÉCRAN : UN MODULE ======
+function moduleView(mi){
+  const m=MODULES[mi],done=modDone(m);
+  let nodes='';
+  m.lessons.forEach((l,i)=>{
+    const unlocked=i===0||isDone(m.lessons[i-1].id);
+    const st=isDone(l.id)?'done':unlocked?'avail':'locked';
+    const info=S.lessons[l.id]?`Meilleur : ${S.lessons[l.id].best}/${l.qs.length}`:l.sub;
+    const off=[0,-60,60][i%3];
+    nodes+=`<div class="node-wrap" style="transform:translateX(${off}px)"><button class="node ${st}" onclick="${st==='locked'?'':`startLesson(${mi},${i})`}">${st==='done'?'✓':st==='locked'?'🔒':l.icon}</button><div class="node-label">${l.title}<small>${info}</small></div></div>`;
+  });
+  const ok=done===m.lessons.length,best=S.exams[m.id];
+  nodes+=`<div class="node-wrap"><button class="node exam ${ok?'avail':'locked'}" onclick="${ok?`startExam('mod',${mi})`:''}">${ok?'⏱️':'🔒'}</button><div class="node-label">Examen du module<small>${ok?(best!=null?'Meilleur : '+pct(best):`${EXAMS.mod.n} questions · ${EXAMS.mod.sec/60} min`):'Réussis les '+m.lessons.length+' leçons'}</small></div></div>`;
+  $(`${topbar()}<div class="content">
+   <button class="back" onclick="mod=null;render()">← Tous les modules</button>
+   <div class="module-head" style="background:${m.c};box-shadow:0 4px 0 ${m.d}"><div><p>MODULE ${m.n}</p><h2>${m.title}</h2><p>${done} / ${m.lessons.length} leçons réussies</p></div><div class="big">${m.icon}</div></div>
+   <div class="path" style="--mc:${m.c};--md:${m.d}">${nodes}</div>
+  </div>${nav()}`);
+}
+
+// ====== ÉCRAN : LEXIQUE ======
+function lexiqueView(){
+  const f=(id,t)=>`<button class="${gf===id?'on':''}" onclick="gf='${id}';lexiqueView()">${t}</button>`;
+  $(`${topbar()}<div class="content"><div class="page-title">Lexique</div><div class="page-sub">${GLOSSARY.length} termes à connaître pour le BIA</div>
+  <button class="btn blue" onclick="startGloss()">Quiz vocabulaire · 10 questions</button>
+  ${S.glossBest?`<p class="note" style="text-align:center;margin-top:8px">Meilleur score : ${S.glossBest}/10</p>`:''}
+  <input class="search" id="gs" type="search" placeholder="🔍 Chercher un mot…" value="${esc(gq)}" oninput="gq=this.value;glist()">
+  <div class="filters">${f('all','Tous')}${MODULES.map(m=>f(m.id,m.icon+' '+m.short)).join('')}</div>
+  <div id="glist"></div></div>${nav()}`);
+  glist();
+}
+function glist(){
+  const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const q=norm(gq.trim());
+  const items=GLOSSARY.filter(([t,d,m])=>(gf==='all'||m===gf)&&(!q||norm(t).includes(q)||norm(d).includes(q))).sort((a,b)=>a[0].localeCompare(b[0],'fr'));
+  const mi=id=>MODULES.find(m=>m.id===id);
+  const el=document.getElementById('glist');if(!el)return;
+  el.innerHTML=items.length?items.map(([t,d,m])=>`<div class="term"><b>${t}<span>${mi(m).icon}</span></b><p>${d}</p></div>`).join(''):'<div class="empty">Aucun terme trouvé</div>';
+}
+
+// ====== ÉCRAN : BADGES ======
 function badgesView(){
   $(`${topbar()}<div class="content"><div class="page-title">Mes badges</div><div class="page-sub">${S.badges.length} / ${BADGES.length} débloqués</div>
   <div class="badges">${BADGES.map(b=>{const on=S.badges.includes(b.id);return `<div class="badge ${on?'on':'off'}"><div class="e">${b.e}</div><b>${b.t}</b><small>${b.d}</small></div>`}).join('')}</div></div>${nav()}`);
 }
+
+// ====== ÉCRAN : PROFIL ======
 function profilView(){
   const d=new Date();let week='';const jours=['D','L','M','M','J','V','S'];
   for(let i=6;i>=0;i--){const x=new Date(d);x.setDate(d.getDate()-i);const on=S.days.includes(ymd(x));week+=`<div><span class="${on?'on':''}">${on?'🔥':''}</span>${jours[x.getDay()]}</div>`}
-  const done=LESSONS.filter(l=>isDone(l.id)).length;
+  const done=ALL_LESSONS.filter(l=>isDone(l.id)).length;
+  const prog=MODULES.map(m=>{const k=modDone(m),n=m.lessons.length;return `<div class="mprog"><div><span>${m.icon} ${m.short}</span><small>${k}/${n}${S.exams[m.id]!=null?' · examen '+pct(S.exams[m.id]):''}</small></div><div class="bar"><i style="width:${k/n*100}%;background:${m.c}"></i></div></div>`}).join('');
   $(`${topbar()}<div class="content"><div class="page-title">Mon profil</div><div class="page-sub">Élève pilote 👨‍✈️</div>
   <div class="pstats">
    <div class="pstat"><span class="e">🔥</span><div><b>${streakNow()}</b><small>Série en cours</small></div></div>
    <div class="pstat"><span class="e">⚡</span><div><b>${S.best}</b><small>Meilleure série</small></div></div>
    <div class="pstat"><span class="e">⭐</span><div><b>${S.xp}</b><small>XP au total</small></div></div>
-   <div class="pstat"><span class="e">📚</span><div><b>${done}/${LESSONS.length}</b><small>Leçons réussies</small></div></div>
-   <div class="pstat"><span class="e">⏱️</span><div><b>${S.examBest===null?'—':Math.round(S.examBest*100)+' %'}</b><small>Meilleur examen</small></div></div>
+   <div class="pstat"><span class="e">📚</span><div><b>${done}/${ALL_LESSONS.length}</b><small>Leçons réussies</small></div></div>
+   <div class="pstat"><span class="e">🎓</span><div><b>${S.blanc===null?'—':pct(S.blanc)}</b><small>Examen blanc</small></div></div>
    <div class="pstat"><span class="e">🏆</span><div><b>${S.badges.length}</b><small>Badges</small></div></div>
   </div>
   <div class="card"><b>Mes 7 derniers jours</b><div class="week">${week}</div></div>
-  <div class="card"><b>Progression du BIA</b><p style="font-size:13px;color:var(--mute);margin:4px 0 10px">Module Météo : ${Math.round(done/LESSONS.length*100)} %</p><div class="bar g"><i style="width:${done/LESSONS.length*100}%"></i></div></div>
+  <div class="card"><b style="display:block;margin-bottom:12px">Progression par module</b>${prog}</div>
   ${installCard()}
   <button class="btn ${resetArm?'red':'ghost'}" onclick="doReset()">${resetArm?'Confirmer : tout effacer':'Réinitialiser ma progression'}</button>
-  <p class="note">Prototype : ta progression est enregistrée uniquement sur cet appareil et dans ce navigateur. Contenu de démonstration rédigé pour le prototype, à faire relire par un instructeur avant mise en ligne.</p>
+  <p class="note">Ta progression est enregistrée uniquement sur cet appareil. Contenu pédagogique en cours de relecture : signale-nous toute erreur !</p>
   </div>${nav()}`);
 }
-function doReset(){if(!resetArm){resetArm=true;return render()}S=fresh();S.started=true;save();resetArm=false;tab='home';render()}
+function doReset(){if(!resetArm){resetArm=true;return render()}S=fresh();S.started=true;save();resetArm=false;tab='home';mod=null;render()}
 
-// ====== LEÇON ======
-function startLesson(i){const l=LESSONS[i];L={i,l,phase:'slides',s:0,qs:shuffle(l.qs).map(prep),k:0,sel:null,checked:false,score:0,xp:0};lessonView()}
-function quit(){L=null;E&&clearInterval(E.timer);E=null;render()}
+// ====== LEÇONS ET QUIZ VOCABULAIRE ======
+function startLesson(mi,i){const m=MODULES[mi],l=m.lessons[i];L={kind:'lesson',mi,i,l,title:l.title,slides:l.slides,phase:'slides',s:0,qs:shuffle(l.qs).map(prep),per:10,k:0,sel:null,checked:false,score:0,xp:0};lessonView()}
+function startGloss(){
+  const pick=shuffle(GLOSSARY).slice(0,10);
+  const qs=pick.map(([t,d,m])=>{
+    let pool=GLOSSARY.filter(g=>g[2]===m&&g[0]!==t);if(pool.length<3)pool=GLOSSARY.filter(g=>g[0]!==t);
+    return prep({q:`Quel terme correspond à cette définition ?<br><span style="font-weight:700;color:#777;font-size:18px">« ${d} »</span>`,o:[t,...shuffle(pool).slice(0,3).map(g=>g[0])],e:`<b>${t}</b> : ${d}`});
+  });
+  L={kind:'gloss',title:'Quiz vocabulaire',slides:[],phase:'quiz',s:0,qs,per:5,k:0,sel:null,checked:false,score:0,xp:0};lessonView();
+}
+function quit(){L=null;if(E)clearInterval(E.timer);E=null;render()}
 function lessonView(){
-  const l=L.l,total=l.slides.length+L.qs.length;
-  const pos=L.phase==='slides'?L.s:l.slides.length+L.k+(L.checked?1:0);
+  const total=L.slides.length+L.qs.length;
+  const pos=L.phase==='slides'?L.s:L.slides.length+L.k+(L.checked?1:0);
   const top=`<div class="l-top"><button class="x" onclick="quit()">✕</button><div class="bar g"><i style="width:${pos/total*100}%"></i></div></div>`;
   if(L.phase==='slides'){
-    const s=l.slides[L.s];
-    return $(`<div class="lesson">${top}<div class="l-body slide"><div class="slide-emoji">${s.e}</div><h2>${s.t}</h2>${s.b}</div><div class="l-foot"><button class="btn blue" onclick="nextSlide()">${L.s<l.slides.length-1?'Continuer':'Je passe au quiz !'}</button></div></div>`);
+    const s=L.slides[L.s];
+    return $(`<div class="lesson">${top}<div class="l-body slide"><div class="slide-emoji">${s.e}</div><h2>${s.t}</h2>${s.b}</div><div class="l-foot"><button class="btn blue" onclick="nextSlide()">${L.s<L.slides.length-1?'Continuer':'Je passe au quiz !'}</button></div></div>`);
   }
   if(L.phase==='end')return endView();
   const q=L.qs[L.k];
   const opts=q.opts.map((o,j)=>{let c='';if(L.checked){if(o.ok)c='ok';else if(j===L.sel)c='ko'}else if(j===L.sel)c='sel';return `<button class="opt ${c}" onclick="pick(${j})">${o.t}</button>`}).join('');
   let foot;
   if(!L.checked)foot=`<div class="l-foot"><button class="btn" ${L.sel===null?'disabled':''} onclick="check()">Vérifier</button></div>`;
-  else{const ok=q.opts[L.sel].ok;foot=`<div class="l-foot ${ok?'good':'bad'}"><div class="fb-title">${ok?'Bravo ! +10 XP':'Pas tout à fait…'}</div><div class="fb-text">${ok?'':'Bonne réponse : <b>'+q.good+'</b><br>'}${q.e}</div><button class="btn ${ok?'':'red'}" onclick="nextQ()">Continuer</button></div>`}
-  $(`<div class="lesson">${top}<div class="l-body"><div class="q-kind">Question ${L.k+1} / ${L.qs.length}</div><div class="q-text">${q.q}</div>${opts}</div>${foot}</div>`);
+  else{const ok=q.opts[L.sel].ok;foot=`<div class="l-foot ${ok?'good':'bad'}"><div class="fb-title">${ok?'Bravo ! +'+L.per+' XP':'Pas tout à fait…'}</div><div class="fb-text">${ok?'':'Bonne réponse : <b>'+q.good+'</b><br>'}${q.e}</div><button class="btn ${ok?'':'red'}" onclick="nextQ()">Continuer</button></div>`}
+  $(`<div class="lesson">${top}<div class="l-body"><div class="q-kind">${L.kind==='gloss'?'Vocabulaire':'Question'} ${L.k+1} / ${L.qs.length}</div><div class="q-text">${q.q}</div>${opts}</div>${foot}</div>`);
 }
-function nextSlide(){if(L.s<L.l.slides.length-1)L.s++;else L.phase='quiz';lessonView()}
+function nextSlide(){if(L.s<L.slides.length-1)L.s++;else L.phase='quiz';lessonView()}
 function pick(j){if(L.checked)return;L.sel=j;lessonView()}
-function check(){if(L.sel===null)return;L.checked=true;if(L.qs[L.k].opts[L.sel].ok){L.score++;L.xp+=10}lessonView()}
+function check(){if(L.sel===null)return;L.checked=true;if(L.qs[L.k].opts[L.sel].ok){L.score++;L.xp+=L.per}lessonView()}
 function nextQ(){if(L.k<L.qs.length-1){L.k++;L.sel=null;L.checked=false;return lessonView()}finishLesson()}
 function finishLesson(){
-  const l=L.l,n=L.qs.length,perfect=L.score===n,passed=L.score/n>=PASS;
-  if(perfect)L.xp+=10;
+  const n=L.qs.length;L.perfect=L.score===n;L.passed=L.score/n>=PASS;
+  if(L.perfect&&L.kind==='lesson')L.xp+=10;
   addXp(L.xp);markActive();
-  const prev=S.lessons[l.id]||{best:0,passed:false};
-  S.lessons[l.id]={best:Math.max(prev.best,L.score),passed:prev.passed||passed};
-  L.passed=passed;L.perfect=perfect;L.newB=checkBadges({perfect});save();L.phase='end';lessonView();
+  if(L.kind==='lesson'){const id=L.l.id,prev=S.lessons[id]||{best:0,passed:false};S.lessons[id]={best:Math.max(prev.best,L.score),passed:prev.passed||L.passed}}
+  else S.glossBest=Math.max(S.glossBest||0,L.score);
+  L.newB=checkBadges({perfect:L.perfect&&L.kind==='lesson'});save();L.phase='end';lessonView();
 }
 function endView(){
-  const n=L.qs.length;
-  $(`<div class="end"><div class="trophy">${L.perfect?'🏆':L.passed?'🎉':'💪'}</div><h2>${L.perfect?'Sans faute !':L.passed?'Leçon réussie !':'Presque !'}</h2><p class="sub">${L.passed?L.l.title+' validée':'Il faut 70 % pour valider. Tu vas y arriver !'}</p>
+  const n=L.qs.length,g=L.kind==='gloss';
+  const sub=g?(L.perfect?'Tu maîtrises le vocabulaire !':'Continue à réviser le lexique.'):(L.passed?L.title+' validée':'Il faut 70 % pour valider. Tu vas y arriver !');
+  const again=g?'startGloss()':`startLesson(${L.mi},${L.i})`;
+  $(`<div class="end"><div class="trophy">${L.perfect?'🏆':L.passed?'🎉':'💪'}</div><h2>${L.perfect?'Sans faute !':L.passed?(g?'Bien joué !':'Leçon réussie !'):'Presque !'}</h2><p class="sub">${sub}</p>
   <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${L.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${L.score}/${n}</div></div><div class="stat o"><div class="h">Série</div><div class="v">🔥 ${streakNow()}</div></div></div>
   ${badgeBox(L.newB)}
-  <button class="btn" onclick="quit()">Continuer</button>${L.passed?'':`<button class="btn ghost" onclick="startLesson(${L.i})">Recommencer</button>`}</div>`);
+  <button class="btn" onclick="quit()">Continuer</button>${(!L.passed||g)?`<button class="btn ghost" onclick="${again}">Recommencer</button>`:''}</div>`);
 }
 const badgeBox=b=>b&&b.length?`<div class="newb"><h3>Nouveau badge !</h3>${b.map(x=>`<div>${x.e} ${x.t}</div>`).join('')}</div>`:'';
 
-// ====== MINI-EXAMEN ======
-function startExam(){
-  const all=LESSONS.flatMap(l=>l.qs);
-  E={qs:shuffle(all).slice(0,EXAM_N).map(prep),k:0,ans:[],sel:null,left:EXAM_SEC,done:false};
-  E.timer=setInterval(()=>{E.left--;const t=document.getElementById('tm');if(t)t.textContent=fmt(E.left);if(E.left<=0)finishExam()},1000);
+// ====== EXAMENS (module ou examen blanc) ======
+function startExam(kind,mi){
+  if(E)clearInterval(E.timer);
+  let qs,sec,title;
+  if(kind==='mod'){const m=MODULES[mi];qs=shuffle(m.lessons.flatMap(l=>l.qs)).slice(0,EXAMS.mod.n);sec=EXAMS.mod.sec;title='Examen '+m.short}
+  else{qs=MODULES.flatMap(m=>shuffle(m.lessons.flatMap(l=>l.qs)).slice(0,EXAMS.blanc.perMod));qs=shuffle(qs);sec=EXAMS.blanc.sec;title='Examen blanc'}
+  E={kind,mi,title,qs:qs.map(prep),k:0,ans:[],sel:null,sec,left:sec,done:false};
+  E.timer=setInterval(()=>{if(!E)return;E.left--;const t=document.getElementById('tm');if(t)t.textContent=fmt(E.left);if(E.left<=0)finishExam()},1000);
   examView();
 }
 const fmt=s=>Math.floor(Math.max(0,s)/60)+':'+pad(Math.max(0,s)%60);
@@ -353,26 +409,29 @@ function examView(){
   if(E.done)return examEnd();
   const q=E.qs[E.k];
   $(`<div class="lesson"><div class="l-top"><button class="x" onclick="quit()">✕</button><div class="bar"><i style="width:${E.k/E.qs.length*100}%;background:var(--orange)"></i></div><div class="timer" id="tm">${fmt(E.left)}</div></div>
-  <div class="l-body"><div class="q-kind" style="color:var(--orange)">Examen · ${E.k+1} / ${E.qs.length}</div><div class="q-text">${q.q}</div>${q.opts.map((o,j)=>`<button class="opt ${j===E.sel?'sel':''}" onclick="E.sel=${j};examView()">${o.t}</button>`).join('')}</div>
+  <div class="l-body"><div class="q-kind" style="color:var(--orange)">${E.title} · ${E.k+1} / ${E.qs.length}</div><div class="q-text">${q.q}</div>${q.opts.map((o,j)=>`<button class="opt ${j===E.sel?'sel':''}" onclick="E.sel=${j};examView()">${o.t}</button>`).join('')}</div>
   <div class="l-foot"><button class="btn blue" ${E.sel===null?'disabled':''} onclick="examNext()">${E.k<E.qs.length-1?'Suivante':'Terminer'}</button></div></div>`);
 }
 function examNext(){if(E.sel===null)return;E.ans[E.k]=E.sel;if(E.k<E.qs.length-1){E.k++;E.sel=null;return examView()}finishExam()}
 function finishExam(){
-  if(E.done)return;clearInterval(E.timer);E.done=true;
+  if(!E||E.done)return;clearInterval(E.timer);E.done=true;
   E.score=E.qs.filter((q,i)=>E.ans[i]!==undefined&&q.opts[E.ans[i]].ok).length;
   E.xp=E.score*5;addXp(E.xp);markActive();
-  const r=E.score/E.qs.length;S.examBest=S.examBest===null?r:Math.max(S.examBest,r);
+  const r=E.score/E.qs.length;
+  if(E.kind==='mod'){const id=MODULES[E.mi].id;S.exams[id]=Math.max(S.exams[id]||0,r)}else S.blanc=S.blanc===null?r:Math.max(S.blanc,r);
   E.newB=checkBadges();save();examView();
 }
 function examEnd(){
   const r=E.score/E.qs.length,ok=r>=0.75;
   const wrong=E.qs.map((q,i)=>({q,a:E.ans[i]})).filter(x=>x.a===undefined||!x.q.opts[x.a].ok);
-  $(`<div class="end"><div class="trophy">${ok?'🏅':'📖'}</div><h2>${Math.round(r*100)} %</h2><p class="sub">${ok?'Excellent, tu es prêt pour la météo du BIA !':'Revois les points ci-dessous et retente ta chance.'}</p>
-  <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${E.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${E.score}/${E.qs.length}</div></div><div class="stat o"><div class="h">Temps</div><div class="v">${fmt(EXAM_SEC-E.left)}</div></div></div>
+  const msg=ok?(E.kind==='blanc'?'Excellent, tu es sur la bonne trajectoire pour le BIA !':'Excellent, ce module est maîtrisé !'):'Revois les points ci-dessous et retente ta chance.';
+  $(`<div class="end"><div class="trophy">${ok?'🏅':'📖'}</div><h2>${pct(r)}</h2><p class="sub">${msg}</p>
+  <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${E.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${E.score}/${E.qs.length}</div></div><div class="stat o"><div class="h">Temps</div><div class="v">${fmt(E.sec-E.left)}</div></div></div>
   ${badgeBox(E.newB)}
   ${wrong.length?`<div class="review"><h3 style="font-weight:900;margin-bottom:10px">À revoir (${wrong.length})</h3>${wrong.map(x=>`<div class="r"><b>${x.q.q}</b>${x.a!==undefined?`<div class="ko">${x.q.opts[x.a].t}</div>`:'<div class="ko">Pas de réponse</div>'}<div class="ok">✓ ${x.q.good}</div><div style="color:#777;margin-top:4px">${x.q.e}</div></div>`).join('')}</div>`:''}
-  <button class="btn" onclick="quit()">Continuer</button><button class="btn ghost" onclick="startExam()">Nouvel examen</button></div>`);
+  <button class="btn" onclick="quit()">Continuer</button><button class="btn ghost" onclick="startExam('${E.kind}',${E.mi===undefined?'undefined':E.mi})">Nouvel examen</button></div>`);
 }
+
 // ====== INSTALLATION SUR LE TÉLÉPHONE (PWA) ======
 let installEvt=null;
 const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
