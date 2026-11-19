@@ -182,7 +182,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 // ================================================================
 //  GO BIA GO — moteur de l'appli (le contenu est dans content.js)
 // ================================================================
-const DAILY_GOAL=50, PASS=0.7;
+const DAILY_GOAL=50, PASS=0.7; // 5 bonnes réponses sur 7 pour valider une leçon
+const need=n=>Math.ceil(n*PASS-1e-9);
 const EXAMS={mod:{n:10,sec:6*60}, blanc:{perMod:4,sec:15*60}};
 
 // ====== ÉTAT (sauvegardé sur l'appareil) ======
@@ -376,7 +377,7 @@ function pick(j){if(L.checked)return;L.sel=j;lessonView()}
 function check(){if(L.sel===null)return;L.checked=true;if(L.qs[L.k].opts[L.sel].ok){L.score++;L.xp+=L.per}lessonView()}
 function nextQ(){if(L.k<L.qs.length-1){L.k++;L.sel=null;L.checked=false;return lessonView()}finishLesson()}
 function finishLesson(){
-  const n=L.qs.length;L.perfect=L.score===n;L.passed=L.score/n>=PASS;
+  const n=L.qs.length;L.perfect=L.score===n;L.passed=L.score>=need(n);
   if(L.perfect&&L.kind==='lesson')L.xp+=10;
   addXp(L.xp);markActive();
   if(L.kind==='lesson'){const id=L.l.id,prev=S.lessons[id]||{best:0,passed:false};S.lessons[id]={best:Math.max(prev.best,L.score),passed:prev.passed||L.passed}}
@@ -385,7 +386,7 @@ function finishLesson(){
 }
 function endView(){
   const n=L.qs.length,g=L.kind==='gloss';
-  const sub=g?(L.perfect?'Tu maîtrises le vocabulaire !':'Continue à réviser le lexique.'):(L.passed?L.title+' validée':'Il faut 70 % pour valider. Tu vas y arriver !');
+  const sub=g?(L.perfect?'Tu maîtrises le vocabulaire !':'Continue à réviser le lexique.'):(L.passed?L.title+' validée':`Il faut au moins ${need(n)} bonnes réponses sur ${n} pour valider. Tu vas y arriver !`);
   const again=g?'startGloss()':`startLesson(${L.mi},${L.i})`;
   $(`<div class="end"><div class="trophy">${L.perfect?'🏆':L.passed?'🎉':'💪'}</div><h2>${L.perfect?'Sans faute !':L.passed?(g?'Bien joué !':'Leçon réussie !'):'Presque !'}</h2><p class="sub">${sub}</p>
   <div class="stats"><div class="stat y"><div class="h">XP gagnés</div><div class="v">⭐ ${L.xp}</div></div><div class="stat gr"><div class="h">Score</div><div class="v">${L.score}/${n}</div></div><div class="stat o"><div class="h">Série</div><div class="v">🔥 ${streakNow()}</div></div></div>
