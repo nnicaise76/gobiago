@@ -1,0 +1,9 @@
+{
+  "appId": "fr.gobiago.app",
+  "appName": "Go BIA Go",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#FFFFFF"
+  }
+}

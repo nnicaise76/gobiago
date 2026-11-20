@@ -1,6 +1,10 @@
 [build]
   publish = "."
 
+# Le site n'a pas besoin des outils iOS : on évite de les installer sur Netlify
+[build.environment]
+  NPM_FLAGS = "--omit=dev"
+
 # Le service worker et le manifeste ne doivent jamais rester en cache navigateur,
 # sinon les mises à jour n'arrivent pas sur les téléphones.
 [[headers]]

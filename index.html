@@ -340,7 +340,7 @@ function profilView(){
   <div class="card"><b style="display:block;margin-bottom:12px">Progression par module</b>${prog}</div>
   ${installCard()}
   <button class="btn ${resetArm?'red':'ghost'}" onclick="doReset()">${resetArm?'Confirmer : tout effacer':'Réinitialiser ma progression'}</button>
-  <p class="note">Ta progression est enregistrée uniquement sur cet appareil. Contenu pédagogique en cours de relecture : signale-nous toute erreur !</p>
+  <p class="note">Ta progression est enregistrée uniquement sur cet appareil. Contenu pédagogique en cours de relecture : signale-nous toute erreur !<br><a href="/confidentialite.html" style="color:var(--blue-d)">Politique de confidentialité</a></p>
   </div>${nav()}`);
 }
 function doReset(){if(!resetArm){resetArm=true;return render()}S=fresh();S.started=true;save();resetArm=false;tab='home';mod=null;render()}
@@ -437,10 +437,11 @@ function examEnd(){
 let installEvt=null;
 const standalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
 const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isNative=()=>{try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;if(tab==='profil'&&!L&&!E)render()});
 window.addEventListener('appinstalled',()=>{installEvt=null;render()});
 function installCard(){
-  if(standalone())return '';
+  if(standalone()||isNative())return '';
   if(installEvt)return `<div class="card"><b>📲 Installer l'appli</b><p style="font-size:14px;color:#777;margin:6px 0 12px">Ajoute Go BIA Go à ton écran d'accueil, même sans connexion.</p><button class="btn blue" onclick="doInstall()">Installer</button></div>`;
   if(isIOS())return `<div class="card"><b>📲 Installer l'appli</b><p style="font-size:14px;color:#777;margin-top:6px;line-height:1.45">Dans Safari, touche le bouton <b>Partager</b> (carré avec une flèche), puis <b>« Sur l'écran d'accueil »</b>.</p></div>`;
   return '';

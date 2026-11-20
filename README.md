@@ -29,3 +29,21 @@ Dans `index.html`, chaque leçon contient une liste `qs`. **La bonne réponse es
 ```
 
 > Prototype : progression enregistrée sur l'appareil uniquement. Contenu à faire relire par un instructeur BIA avant diffusion publique.
+
+## Appli iOS (Capacitor)
+
+Sur le Mac, à la première installation :
+
+```bash
+git clone https://github.com/nnicaise76/gobiago.git
+cd gobiago
+npm install
+npm run ios:setup
+npx cap open ios
+```
+
+Ensuite, après chaque modification du contenu : `git pull` puis `npm run ios` (ouvre Xcode avec la version à jour).
+
+- Identifiant de l'appli (bundle ID) : `fr.gobiago.app`
+- Icône et écran de démarrage : dossier `assets/`
+- Politique de confidentialité : https://gobiago.fr/confidentialite.html
