@@ -1,6 +1,6 @@
 // Service worker de Go BIA Go : permet d'utiliser l'appli hors connexion.
 // Pense à changer VERSION à chaque mise en ligne pour que les téléphones récupèrent la nouvelle version.
-const VERSION = 'gobiago-v4';
+const VERSION = 'gobiago-v5';
 const SHELL = ['/', '/index.html', '/content.js', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

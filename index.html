@@ -19,7 +19,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:#EAF7FE;font-weight:700}
-#app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);position:relative}
+#app{max-width:480px;margin:0 auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:2px solid var(--line);position:sticky;top:0;background:#fff;z-index:5}
 .logo{font-weight:900;font-size:22px;color:var(--blue);letter-spacing:-.5px}
@@ -28,7 +28,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .chip{display:flex;align-items:center;gap:4px}
 .chip.fire{color:var(--orange)} .chip.fire.off{color:var(--mute);filter:grayscale(1)}
 .chip.xp{color:var(--yellow)}
-.content{flex:1;padding:18px 18px 100px;overflow-y:auto}
+.content{flex:1;padding:18px 18px calc(100px + env(safe-area-inset-bottom));overflow-y:auto}
 .card{border:2px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
 .goal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .goal-h b{font-size:17px;font-weight:900}
@@ -68,7 +68,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .btn.red{background:var(--red);box-shadow:0 5px 0 var(--red-d)}
 .btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
 .btn:disabled{background:var(--line);color:var(--mute);box-shadow:0 5px 0 #CECECE;cursor:default}
-.lesson{display:flex;flex-direction:column;min-height:100vh}
+.lesson{display:flex;flex-direction:column;flex:1}
 .l-top{display:flex;align-items:center;gap:14px;padding:16px 18px}
 .l-top .x{font-size:26px;color:var(--mute);line-height:1}
 .l-top .bar{flex:1}
@@ -87,14 +87,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .opt.sel{border-color:#84D8FF;background:#DDF4FF;color:var(--blue-d)}
 .opt.ok{border-color:var(--green);background:#D7FFB8;color:var(--green-d)}
 .opt.ko{border-color:var(--red);background:#FFDFE0;color:var(--red-d)}
-.l-foot{padding:16px 20px 24px;border-top:2px solid var(--line)}
+.l-foot{padding:16px 20px calc(20px + env(safe-area-inset-bottom));border-top:2px solid var(--line);position:sticky;bottom:0;background:#fff;z-index:3}
 .l-foot.good{background:#D7FFB8;border-color:#D7FFB8}
 .l-foot.bad{background:#FFDFE0;border-color:#FFDFE0}
 .fb-title{font-size:20px;font-weight:900;margin-bottom:6px}
 .good .fb-title{color:var(--green-d)} .bad .fb-title{color:var(--red-d)}
 .fb-text{font-size:15px;font-weight:700;margin-bottom:14px;line-height:1.4}
 .good .fb-text{color:#3F8A04} .bad .fb-text{color:#B8282B}
-.end{text-align:center;padding:30px 22px}
+.end{text-align:center;padding:30px 22px calc(30px + env(safe-area-inset-bottom))}
 .end .trophy{font-size:90px;animation:pop .5s}
 .end h2{font-size:28px;font-weight:900;margin:10px 0 6px}
 .end p.sub{color:var(--mute);margin-bottom:22px}
@@ -132,7 +132,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .week div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--mute)}
 .week span{width:30px;height:30px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:15px}
 .week span.on{background:var(--orange);color:#fff}
-.welcome{text-align:center;padding:40px 24px;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+.welcome{text-align:center;padding:40px 24px;display:flex;flex-direction:column;justify-content:center;flex:1;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
 .welcome .plane{font-size:100px;animation:fly 3s ease-in-out infinite}
 @keyframes fly{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
 .welcome h1{font-size:34px;font-weight:900;color:var(--blue);margin:18px 0 10px}
